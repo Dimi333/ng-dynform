@@ -1,0 +1,22 @@
+<form novalidate (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
+    <div *ngFor="let prop of objectProps">
+        <label [attr.for]="prop.id">{{prop.label}}</label>
+
+        <div [ngSwitch]="prop.type">
+            <input *ngSwitchCase="'text'" [formControlName]="prop.key" [id]="prop.id" [type]="prop.type" [ngClass]="{'required': prop.validation.required}">
+        </div>
+
+        <div [ngSwitch]="prop.type">
+            <input *ngSwitchCase="'number'" [formControlName]="prop.key" [id]="prop.id" [type]="prop.type">
+        </div>
+
+        <div class="chyba" *ngIf="form.get(prop.key).invalid && (form.get(prop.key).dirty || form.get(prop.key).touche)">
+            <div *ngIf="form.get(prop.key).errors.required">
+                * required
+            </div>
+        </div>
+    </div>
+    <p>
+        <button [disabled]="!form.valid" type="submit">Ulož</button>
+    </p>
+</form>
